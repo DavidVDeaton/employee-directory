@@ -1,6 +1,6 @@
 import React from 'react';
-import Row from './components/Row/Row'
-import TableHead from './components/TableHeader/TableHeader'
+import Row from './components/row';
+import TableHead from './components/tableheader';
 import API from './utils/API';
 
 // Styles to be used for the table div
