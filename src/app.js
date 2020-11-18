@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Row from './components/row';
 import TableHead from './components/tableheader';
-import API from './utils/API';
+import API from './components/API';
+import axios from 'axios';
 
 // Styles to be used for the table div
 const tableStyles = {
@@ -19,7 +20,6 @@ constructor() {
   this.state = {
     employees: [],
     search: "",
-    sortType: ""
   }
 }
 
@@ -37,6 +37,27 @@ onchange = e => {
 
 }
 
+buttons() {
+
+    const [male, setMale] = useState('');
+
+    useEffect ( () => {
+        axios.get(`https://randomuser.me/api/?results=5&nat=us`)
+            .then(res => {
+                if (res.data.results[0].gender === 'male') {
+                    setMale({
+                    male:res.data.results.gender.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
+                    res.data.results.name.first.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
+                    res.data.results.name.last.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
+                    res.data.results.location.city.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
+                    res.data.results.location.state.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
+                    res.data.results.email.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+                    })
+                }
+            })
+    })
+}
+
 
 render() {
 
@@ -48,42 +69,37 @@ render() {
     employee.location.state.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
     employee.email.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
   });
-  const {sortType} = this.state;
-
-  const sorted = filteredEmployees.sort( (a, b) => {
-    const isReversed = (sortType === "asc") ? 1 : -1;
-    return isReversed * a.name.last.toString().localeCompare(b.name.last.toString())
-  });
 
   return (
 
-// The html that gets rendered
-    <div className="container">
-      {/* Search bar */}
-      <div className="row">
-        <input style={{marginTop: '15px'}} type="text" className="col" placeholder="Search for an employee" onChange={this.onchange}/>
-      </div>
 
-      {/* Table */}
-      <div className="row">
-        <table className="col-sm" style={tableStyles}>
-        <TableHead />
-          <tbody>
-          <Row employees={filteredEmployees}/>
+    <div className='body'>
+        <nav className='orange'>Employee Directory</nav>
+        <div className="container">
+            {/* Search bar */}
+            <div className="row">
+                <input style={{marginTop: '15px'}} type="text" className="col" placeholder="Search for an employee" onChange={this.onchange}/>
+            </div>
 
-          </tbody>
-        </table>
-        
-      </div>
-      {/* Buttons to sort by last name */}
-      <div className="row">
-        <div className="col">
-            <button className="btn btn-primary" style={{backgroundColor: 'purple', marginRight: "10px"}} onClick={() => this.setState({sortType: 'asc'})}>Sort by last name asc.</button>
-            <button className="btn btn-primary" style={{backgroundColor: 'purple'}} onClick={() => this.setState({sortType: 'desc'})}>Sort by last name desc.</button>
+            {/* Table */}
+            <div className="row">
+                <table className="col-sm" style={tableStyles}>
+                <TableHead />
+                <tbody>
+                <Row employees={filteredEmployees}/>
+
+                </tbody>
+                </table>
+                
+            </div>
+            {/* Buttons to sort by last name */}
+            <div className="row">
+                <div className="col">
+                    <button className="btn btn-primary" style={{backgroundColor: 'purple', marginRight: "10px"}} onClick={this.buttons.male}>Male</button>
+                    <button className="btn btn-primary" style={{backgroundColor: 'purple'}} onClick={female.female}>Female</button>
+                </div>
+            </div>
         </div>
-      </div>
-
-      
     </div>
   );
 }

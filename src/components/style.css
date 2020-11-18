@@ -1,0 +1,32 @@
+tr {
+    border-bottom: 1px solid #dddddd
+}
+
+tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tr:last-of-type {
+    border-bottom: 2px solid purple;
+}
+
+.container {
+    background-color: orange;
+    padding: 25px;
+}
+
+.body {
+    background-color: purple;
+    min-height: 1000px;
+}
+
+.orange {
+    color: orange;
+    font-size: 36px;
+    margin-bottom: 25px;
+    margin-left: 10px;
+}
+
+.col {
+    margin: 10px;
+}
