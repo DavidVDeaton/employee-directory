@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import "./style.css";
 
 function Buttons() {
 
-    const [Male, setMale] = useState('');
-    const [Female, setFemale] = useState('');
+    const [male, setMale] = useState('');
+    const [female, setFemale] = useState('');
 
         useEffect ( () => {
-        axios.get(`https://randomuser.me/api/?results=5&nat=us`)
+            axios.get(`https://randomuser.me/api/?results=5&nat=us`)
             .then(res => {
-                let i;
-                for (i=0; i<5; i++) {
-                    setMale({male: res.data.results[i].gender});
-                    setFemale({female: res.data.results[i].gender});
-                }
-
+                setMale({male: res.data.results[0].gender});
+                setFemale({female: res.data.results[0].gender});
             });
-        })
+        }, [])
 
     return (
         <div className="row">
@@ -26,7 +23,7 @@ function Buttons() {
             </div>
       </div>
   
-    )
+    );
 }
 
 export default Buttons;

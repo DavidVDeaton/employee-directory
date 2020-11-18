@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Row from './components/row';
 import TableHead from './components/tableheader';
 import API from './components/API';
-import axios from 'axios';
+import Buttons from './components/buttons';
 
 // Styles to be used for the table div
 const tableStyles = {
@@ -35,27 +35,6 @@ onchange = e => {
   this.setState({ search: e.target.value });
   console.log(this.state.search);
 
-}
-
-buttons() {
-
-    const [male, setMale] = useState('');
-
-    useEffect ( () => {
-        axios.get(`https://randomuser.me/api/?results=5&nat=us`)
-            .then(res => {
-                if (res.data.results[0].gender === 'male') {
-                    setMale({
-                    male:res.data.results.gender.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
-                    res.data.results.name.first.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
-                    res.data.results.name.last.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
-                    res.data.results.location.city.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
-                    res.data.results.location.state.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 ||
-                    res.data.results.email.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
-                    })
-                }
-            })
-    })
 }
 
 
@@ -93,12 +72,7 @@ render() {
                 
             </div>
             {/* Buttons to sort by last name */}
-            <div className="row">
-                <div className="col">
-                    <button className="btn btn-primary" style={{backgroundColor: 'purple', marginRight: "10px"}} onClick={this.buttons.male}>Male</button>
-                    <button className="btn btn-primary" style={{backgroundColor: 'purple'}} onClick={female.female}>Female</button>
-                </div>
-            </div>
+                <Buttons />
         </div>
     </div>
   );
